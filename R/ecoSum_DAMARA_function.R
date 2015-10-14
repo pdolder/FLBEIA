@@ -71,7 +71,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         res[k:(k + prod(Dim) - 1), "revenueElsewhere"] <- res[k:(k + prod(Dim) - 1), "revenueElsewhere"] + c(covars[["NumbVessels"]][f, years,] * covars[["OtherRevenueElsewhere"]][f, years,])
         res[k:(k + prod(Dim) - 1), "totalRevenue"] <- (res[k:(k + prod(Dim) - 1), "revenueFocusArea"] + res[k:(k + prod(Dim) - 1), "revenueElsewhere"])
         ##crewCosts
-        res[k:(k + prod(Dim) - 1), "crewCosts"] <- res[k:(k + prod(Dim) - 1), "totalRevenue"] * fl@crewshare[,years,]
+        res[k:(k + prod(Dim) - 1), "crewCosts"] <- res[k:(k + prod(Dim) - 1), "totalRevenue"] * c(fl@crewshare[,years,])
         ##profits and BER
         res[k:(k + prod(Dim) - 1), "GCF"] <- res[k:(k + prod(Dim) - 1), "totalRevenue"] - res[k:(k + prod(Dim) - 1), "fixedCosts"] - res[k:(k + prod(Dim) - 1), "fuelCosts"] - res[k:(k + prod(Dim) - 1), "variableCosts"] - res[k:(k + prod(Dim) - 1), "crewCosts"]
         res[k:(k + prod(Dim) - 1), "GVA"] <- res[k:(k + prod(Dim) - 1), "GCF"] + res[k:(k + prod(Dim) - 1), "crewCosts"]
