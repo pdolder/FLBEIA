@@ -142,7 +142,7 @@ CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
       # When assyrnumb+1 < Yrtg, F is the linear difference between Fsq and Ftg
       Yrtg<-as.numeric(Yrtg)
       yr.now<-as.numeric(assyrnumb)
-      Ftg2<-ifelse(yr.now+1>=Yrtg,Ftg,((1-(1/(Yrtg-yr.now+1)))*fsq)+((1/(Yrtg-yr.now+1))*Ftg))
+      Ftg2<-ifelse(yr.now+1>=Yrtg,Ftg,((1-(1/(Yrtg-yr.now+1)))*fsq)+((1/(Yrtg-yr.now+1))*as.numeric(Ftg)))
       print(Ftg2)
       Ftg2<-min(max(fsq,Ftg),Ftg2) # take the min or fsq or the new target, but ensuring fsq is not below Ftg
       
