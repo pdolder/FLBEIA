@@ -67,7 +67,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
           }
         }
         ## Need to add in additional revenue from outside 7B-K and other species - check FG and BK
-        res[k:(k + prod(Dim) - 1), "revenueFocusArea"] <- res[k:(k + prod(Dim) - 1), "revenueFocusArea"] + c(covars[["OtherRevenue7BK"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
+        res[k:(k + prod(Dim) - 1), "revenueFocusArea"] <- res[k:(k + prod(Dim) - 1), "revenueFocusArea"] + c(covars[["OtherRevenueFocusArea"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
         res[k:(k + prod(Dim) - 1), "revenueElsewhere"] <- res[k:(k + prod(Dim) - 1), "revenueElsewhere"] + c(covars[["NumbVessels"]][f, years,] * covars[["OtherRevenueElsewhere"]][f, years,])
         res[k:(k + prod(Dim) - 1), "totalRevenue"] <- (res[k:(k + prod(Dim) - 1), "revenueFocusArea"] + res[k:(k + prod(Dim) - 1), "revenueElsewhere"])
         ##crewCosts
