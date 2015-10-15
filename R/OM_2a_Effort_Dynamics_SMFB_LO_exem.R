@@ -252,8 +252,8 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
                 Cr.f_min_qt <- Cr.f
               
                 for(st in sts){
-                  browser()
-                  
+                  #browser()
+                  effort.fun <- ifelse(dim(Ni[[st]])[1] == 1, 'CobbDouglasBio.effort', 'CobbDouglasAge.effort')
                   # To calculate the final quota, the year transfer % needs to be applied to the original quota before
                   # discounting the quota used the pevious year and then discount this quota.
                   min_p <- fleets.ctrl[[flnm]]$LandObl_minimis_p[st,yr] # matrix(st,ny)
