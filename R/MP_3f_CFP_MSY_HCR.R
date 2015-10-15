@@ -140,8 +140,8 @@ CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
       # Here we add the new calculation of Ftg dependent on Yrtg
       # When assyrnumb+1 >= Yrtg, Ftg=Ftg
       # When assyrnumb+1 < Yrtg, F is the linear difference between Fsq and Ftg
-      Ftg2<-ifelse(assyrnumb+1>=Yrtg,Ftg,((1-(1/(Yrtg-assyrnumb+1)))*fsq)+((1/(Yrtg-assyrnumb+1))*Ftg)
-      cat(Ftg2)
+      Ftg2<-ifelse(assyrnumb+1>=Yrtg,Ftg,((1-(1/(Yrtg-assyrnumb+1)))*fsq)+((1/(Yrtg-assyrnumb+1))*Ftg))
+      print(Ftg2)
       Ftg2<-min(max(fsq,Ftg),Ftg2) # take the min or fsq or the new target, but ensuring fsq is not below Ftg
       
           fwd.ctrl2 <- fwdControl(data.frame(year = c(assyrnumb+1, assyrnumb+1),  val = c(Ftg2,NA), quantity = c( 'f', Cadv),
