@@ -34,6 +34,7 @@ export(
   "catchStock.f",
   "catchWStock",
   "catchWStock.f",
+  "CFPMSYHCR",
   "checkBDTarget",
   "checkDims",
   "chkBDTargetQuantity",
