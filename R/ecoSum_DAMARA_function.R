@@ -48,7 +48,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         ## fleet based costs (i.e. fixed and capital)
         res[k:(k + prod(Dim) - 1), "fixedCosts"] <- res[k:(k + prod(Dim) - 1), "fixedCosts"] + c(covars[["FixedCost"]][f,years,] * covars[["NumbVessels"]][f, years,])
         res[k:(k + prod(Dim) - 1), "depreciationCosts"] <- res[k:(k + prod(Dim) - 1), "depreciationCosts"] + c(covars[["DepreciationCost"]][f, years,] * covars[["NumbVessels"]][f, years,])
-        res[k:(k + prod(Dim) - 1), "investmentCosts"] <- res[k:(k + prod(Dim) - 1), "investmentCosts"] + c(covars[["InvestShare"]][f, years,] * covars[["CapitalCost"]][f, years,] * covars[["NumbVessels"]][f, years,])
+        res[k:(k + prod(Dim) - 1), "investmentCosts"] <- res[k:(k + prod(Dim) - 1), "investmentCosts"] + c(covars[["InvestShare"]][f, years,] * covars[["CapitalValue"]][f, years,] * covars[["NumbVessels"]][f, years,])
         ##metier based costs (i.e. fuel and other variable costs)
         for (mt in mts) {   ##CHECK ALL EFFORT IS ACCOUNTED FOR!
           res[k:(k + prod(Dim) - 1), "fuelCosts"] <- res[k:(k + prod(Dim) - 1), "fuelCosts"] + c(covars[["FuelCost"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
