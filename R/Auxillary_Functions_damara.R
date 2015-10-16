@@ -119,3 +119,23 @@ setMethod("slot.fleet", signature(fleets="FLFleetsExt"),
 ##################################################################################################
 ##################################################################################################
 
+##################################################################################################
+##################################################################################################
+## Function to extract the price at age from the catches slot of the first metier catching the stock
+## Used in DAMARA for filling the base parameters for the elasticPrices function
+##################################################################################################
+##################################################################################################
+
+getPrice<-function(fleet,stock) {
+  Mts<-fleet@metiers@names
+  
+  for (m in Mts) {
+    if(!stock %in% catchNames(fleet@metiers[[m]])) next
+    
+    res<-fleet@metiers[[m]]@catches[[stock]]@price
+    return(res)
+    stop
+  }
+  
+}
+
