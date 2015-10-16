@@ -34,12 +34,13 @@ export(
   "catchStock.f",
   "catchWStock",
   "catchWStock.f",
-  "CFPMSYHCR",
+  "CFPMSYHCR",      # DAMARA
   "checkBDTarget",
   "checkDims",
   "chkBDTargetQuantity",
   "chkBDTrgtArrayIters",
   "chkFwdBDControl",
+  "close.area",    # DAMARA
   "cobbDoug",
   "cobbDougInv",
   "CobbDouglasFit",
@@ -122,6 +123,8 @@ export(
   "landStock.f",
   "landWStock",
   "landWStock.f",
+  "loadStockRange",    # DAMARA
+  "loadStocks",       # DAMARA
 "MAPHCR",
 #  "MaxProfit.stkCnst",
   "MaxProfit",
@@ -161,6 +164,7 @@ export(
   "seasonshare.CAA",
   "SelAtAge",
   "showArray",
+  "slot.fleet",   # DAMARA
   "SMFB",
 "SMFB_lo",
   "SRsim",
