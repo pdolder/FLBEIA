@@ -110,6 +110,7 @@ export(
   "fwdBD",
   "fwdBDControl",
   "getPlural",
+  "getPrice",
   "getQuantity",
   "ghlHCR",
   "gmeanHistGrowth",
