@@ -31,7 +31,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         variableCosts=numeric(n),fixedCosts=numeric(n),
         depreciationCosts=numeric(n),investmentCosts=numeric(n),
         GCF=numeric(n),GVA=numeric(n),netProfit=numeric(n),BER=numeric(n),
-        employment=numeric(n))
+        employment=numeric(n),numberVessels=numeric(n))
     k <- 1
     for (f in flnms) {
         fl <- fleets[[f]]
@@ -79,6 +79,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         res[k:(k + prod(Dim) - 1), "BER"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + res[k:(k + prod(Dim) - 1), "fixedCosts"] + res[k:(k + prod(Dim) - 1), "depreciationCosts"] + res[k:(k + prod(Dim) - 1), "investmentCosts"]) /
                                              ((res[k:(k + prod(Dim) - 1), "GCF"] + res[k:(k + prod(Dim) - 1), "crewCosts"]) / res[k:(k + prod(Dim) - 1), "totalRevenue"])
         res[k:(k + prod(Dim) - 1), "employment"] <- res[k:(k + prod(Dim) - 1), "employment"] + c(covars[["EmploymentPerVessel"]][f,years,] * covars[["NumbVessels"]][f,years,])
+        res[k:(k + prod(Dim) - 1),"numberVessels"] <-res[k:(k + prod(Dim) - 1), "numberVessels"] + c(covars[["NumbVessels"]][f,years,])
         }
         k <- k + prod(Dim)
     }
