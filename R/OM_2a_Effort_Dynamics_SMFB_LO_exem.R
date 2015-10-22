@@ -184,7 +184,8 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
         }
         
         effort.fun <- paste(fleets.ctrl[[flnm]][[st]][['catch.model']], 'effort', sep = '.')
-        for(i in 1:it){          
+        for(i in 1:it){ 
+        browser()
             Nst  <- array(N[[st]][drop=T],dim = dim(N[[st]])[c(1,3,6)])
             effs[st, i] <-  eval(call(effort.fun, Cr = Cr.f[st,i],  N = Nst[,,i,drop=F], q.m = q.m[[st]][,,,i,drop=F],
                                 efs.m = efs.m[,i,drop=F], alpha.m = alpha.m[[st]][,,,i,drop=F], beta.m = beta.m[[st]][,,,i,drop=F],
