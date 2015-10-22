@@ -185,7 +185,7 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
         
         effort.fun <- paste(fleets.ctrl[[flnm]][[st]][['catch.model']], 'effort', sep = '.')
         for(i in 1:it){ 
-        browser()
+        #browser()
             Nst  <- array(N[[st]][drop=T],dim = dim(N[[st]])[c(1,3,6)])
             effs[st, i] <-  eval(call(effort.fun, Cr = Cr.f[st,i],  N = Nst[,,i,drop=F], q.m = q.m[[st]][,,,i,drop=F],
                                 efs.m = efs.m[,i,drop=F], alpha.m = alpha.m[[st]][,,,i,drop=F], beta.m = beta.m[[st]][,,,i,drop=F],
@@ -349,7 +349,7 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
         quota.share.OR <- matrix(t(yr.share*ss.share), ns, it)
         # The catch.
         catchFun <- fleets.ctrl[[flnm]][[st]][['catch.model']]
-        browser()
+        if (yr==48 browser())
        Nst  <-  array(N[[st]][drop=T],dim = dim(N[[st]])[c(1,3,6)])
         catchD <- eval(call(catchFun, N = Nst,  E = eff, efs.m = efs.m, q.m = q.m[[st]], alpha.m = alpha.m[[st]], beta.m = beta.m[[st]], wd.m = wd.m[[st]], wl.m = wl.m[[st]], ret.m = ret.m[[st]]))
         itD <- ifelse(is.null(dim(catchD)), 1, length(dim(catchD)))
