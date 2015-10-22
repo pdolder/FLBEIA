@@ -349,8 +349,7 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
         quota.share.OR <- matrix(t(yr.share*ss.share), ns, it)
         # The catch.
         catchFun <- fleets.ctrl[[flnm]][[st]][['catch.model']]
-        if (yr==48) browser()
-       Nst  <-  array(N[[st]][drop=T],dim = dim(N[[st]])[c(1,3,6)])
+        Nst  <-  array(N[[st]][drop=T],dim = dim(N[[st]])[c(1,3,6)])
         catchD <- eval(call(catchFun, N = Nst,  E = eff, efs.m = efs.m, q.m = q.m[[st]], alpha.m = alpha.m[[st]], beta.m = beta.m[[st]], wd.m = wd.m[[st]], wl.m = wl.m[[st]], ret.m = ret.m[[st]]))
         itD <- ifelse(is.null(dim(catchD)), 1, length(dim(catchD)))
         catch <- apply(catchD, itD, sum)  # sum catch along all dimensions except iterations.
