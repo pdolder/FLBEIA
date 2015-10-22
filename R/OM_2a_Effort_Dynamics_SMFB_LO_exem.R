@@ -106,10 +106,10 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
 
     }
     
-    if(it > 1)    TAC <- ifelse(B*rho[stnms,] < TAC.yr*QS.ss, B*rho[stnms,], TAC.yr*QS.ss) 
+    if( > 1)    TAC <- ifelse(B*rho[stnms,] < TAC.yr*QS.ss, B*rho[stnms,], TAC.yr*QS.ss) 
     else TAC <- ifelse(B*rho[stnms] < TAC.yr*QS.ss, B*rho[stnms], TAC.yr*QS.ss)
 
-    # Re-scale QS to fleet share within the season instead of season-fleet share within year.
+    # Re-scale QS to fleet share whin the season instead of season-fleet share whin year.
     QS   <- lapply(stnms, function(x){          # list of stocks, each stock [nf,it]
                             res <- sweep(QS[[x]], 2, apply(QS[[x]],2, sum), "/")
                             res[is.na(res)] <- 0 
@@ -349,6 +349,7 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
         quota.share.OR <- matrix(t(yr.share*ss.share), ns, it)
         # The catch.
         catchFun <- fleets.ctrl[[flnm]][[st]][['catch.model']]
+        browser()
        Nst  <-  array(N[[st]][drop=T],dim = dim(N[[st]])[c(1,3,6)])
         catchD <- eval(call(catchFun, N = Nst,  E = eff, efs.m = efs.m, q.m = q.m[[st]], alpha.m = alpha.m[[st]], beta.m = beta.m[[st]], wd.m = wd.m[[st]], wl.m = wl.m[[st]], ret.m = ret.m[[st]]))
         itD <- ifelse(is.null(dim(catchD)), 1, length(dim(catchD)))
