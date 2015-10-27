@@ -298,8 +298,6 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
                                                (diff - fleets.ctrl[[flnm]]$LandObl_minimis_p[,yr] - 1),
                                                 fleets.ctrl[[flnm]]$LandObl_yearTransfer_p[,yr]))*Cr.f[,i]
               
-              cat("CATCH after Landing Obligation Exemptions", catch_Elo[sts]/Cr.f[sts,i], "\n") 
-              
               # update ret.m to account for the discards due to minimise exemption.
               for(st in sts){
               #if(st == 'OTH')
