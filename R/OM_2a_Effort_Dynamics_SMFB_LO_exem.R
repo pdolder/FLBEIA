@@ -284,7 +284,7 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
       
               eff[i] <- fcube_lo$E
               fl@effort[,yr,,ss,,i] <- fcube_lo$E
-                  cat('Effort after Landing Obligation Exemptions: ',fcube_lo$E, '\n')
+               cat('Effort after Landing Obligation Exemptions: ',fcube_lo$E, '\n')
               
               # Divide the extra catch, in discards (from minimis, only those derived from MLS), year quota transfer 
               # to discount in the following year and quota swap (in this order)
