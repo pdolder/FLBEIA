@@ -73,7 +73,7 @@ CobbDouglasBio.CAA  <- function(fleets, biols, fleets.ctrl, advice, year = 1, se
     if(!(st %in% sts)) return(fleets)
     
     # catch restriction, if empty => landings.
-    catch.restr <- ifelse(is.null(fleets.ctrl[[flnm]]$restriction), 'landings', fleets.ctrl[[flnm]]$restriction)
+    catch.restr <- ifelse(is.null(fleets.ctrl[[flnm]]$restriction[[yr]]), 'landings', fleets.ctrl[[flnm]]$restriction[[yr]])
                                              
     tac <- rep('Inf',it)
     
@@ -207,7 +207,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
     tac <- rep('Inf',it)
  
     # catch restriction, if empty => landings.
-    catch.restr <- ifelse(is.null(fleets.ctrl[[flnm]]$restriction), 'landings', fleets.ctrl[[flnm]]$restriction)
+    catch.restr <- ifelse(is.null(fleets.ctrl[[flnm]]$restriction[[yr]]), 'landings', fleets.ctrl[[flnm]]$restriction[[yr]])
     
  
     #  quota share % to be upodate du to year transfer.
