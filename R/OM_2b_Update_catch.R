@@ -284,7 +284,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
 
     tac.disc <- ifelse(Ctotal < tac, 1, tac/Ctotal)
  
- # cat('Lrat: ', tac.disc, '\n')
+  cat('Lrat: ', tac.disc, '\n')
  # cat('C: ', Ctotal, '\n')
 
     Cam <- array(Cam, dim = c(length(mtnms),dim(biols[[st]]@n)[1], 1, dim(biols[[st]]@n)[3],1,1,it))
@@ -327,7 +327,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
     fleets[[flnm]] <- fl
     
 #    fleets <- FLFleetsExt(fleets)
-    
+  cat('Lrat end of the function', c(quantSums(catchWStock.f(fl, stknm)))/tac,'\n')  
     return(fleets)
 }
 
