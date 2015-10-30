@@ -327,7 +327,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
     fleets[[flnm]] <- fl
     
 #    fleets <- FLFleetsExt(fleets)
-  cat('Lrat end of the function', c(quantSums(catchWStock.f(fl, stknm))[yr])/tac,'\n')  
+  cat('Lrat end of the function', c(quantSums(catchWStock.f(fl, stknm)[yr]))/tac,'\n')  
     return(fleets)
 }
 
