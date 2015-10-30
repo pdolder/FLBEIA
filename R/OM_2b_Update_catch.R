@@ -291,7 +291,7 @@ browser()
 
     for(mt in 1:length(mtnms)){
 
-        Ca <- array(Cam[mt,,,,,,], dim = c(dim(biols[[st]]@n)[1], 1, dim(biols[[st]]@n)[3],1,1,it))
+        Ca <- array(Cam[mt,,,,,], dim = c(dim(biols[[st]]@n)[1], 1, dim(biols[[st]]@n)[3],1,1,it))
 
         if(!(st %in% names(fl@metiers[[mt]]@catches))) next
         cobj <- fl[[mt]][[st]]
