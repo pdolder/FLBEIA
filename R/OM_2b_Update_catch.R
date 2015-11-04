@@ -137,7 +137,7 @@ CobbDouglasBio.CAA  <- function(fleets, biols, fleets.ctrl, advice, year = 1, se
     Nst  <- array(N[drop=T],dim = dim(N)[c(1,3,6)])
     Cm <- CobbDouglasBio(E= eff, N = N, wl.m = wl.m, wd.m = wd.m, ret.m = ret.m, q.m = q.m,
              efs.m = efs.m, alpha.m = alpha.m, beta.m = beta.m, rho = rho)
-    browser()
+    #browser()
     Ctotal <-  ifelse(rep(catch.restr == 'landings',ni), apply(Cm*matrix(ret.m, dim(ret.m)[1], dim(ret.m)[4]),2,sum), apply(Cm,2,sum))
 
     tac.disc <- ifelse(Ctotal < tac, rep(1,it), tac/Ctotal)
