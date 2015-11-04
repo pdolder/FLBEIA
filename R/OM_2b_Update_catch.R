@@ -297,7 +297,7 @@ browser()
         cobj <- fl[[mt]][[st]]
 
 
-        na <- dim(q.m)[1]
+        na <- dim(q.m)[2]
         nu <- ifelse(is.na(dim(q.m)[3]), 1, dim(q.m)[3])
 
         efm <- array(eff*efs.m[mt,], dim = c(it,na,1,nu,1,1))
