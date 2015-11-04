@@ -279,14 +279,15 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
     Cam <- CobbDouglasAge(E = eff, N = Nst, wl.m = wl.m, wd.m = wd.m, ret.m = ret.m, q.m = q.m,
                             efs.m = efs.m, alpha.m = alpha.m, beta.m = beta.m, rho = rho)
 
- # if catch restriction is landings, Lrat is calculated over landigns, else it is calculated over total catch including undersize individuals.
+ # if catch restriction is landings, Lrat is calculated over landings, else it is calculated over total catch including undersize individuals.
+ browser()
     Ctotal <- ifelse(catch.restr == 'landings', apply(Cam*ret.m,4,sum), apply(Cam,4,sum)) 
 
     tac.disc <- ifelse(Ctotal < tac, 1, tac/Ctotal)
  
   cat('Lrat: ', tac.disc, '\n')
  # cat('C: ', Ctotal, '\n')
-#browser()
+
     Cam <- array(Cam, dim = c(length(mtnms),dim(biols[[st]]@n)[1], 1, dim(biols[[st]]@n)[3],1,it))
 
     for(mt in 1:length(mtnms)){
