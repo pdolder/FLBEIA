@@ -280,7 +280,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
                             efs.m = efs.m, alpha.m = alpha.m, beta.m = beta.m, rho = rho)
 
  # if catch restriction is landings, Lrat is calculated over landings, else it is calculated over total catch including undersize individuals.
- browser()
+ #browser()
  
     Ctotal <- ifelse(rep(catch.restr == 'landings',ni), apply(Cam*ret.m,4,sum), apply(Cam,4,sum)) 
 
