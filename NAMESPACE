@@ -174,7 +174,7 @@ export(
   "SSFB",
   "stock.fleetInfo",
   "summary_flbeia",
-  "SumIndQuantiles" # DAMARA
+  "SumIndQuantiles", # DAMARA
   "tdiscStock",
   "tlandStock",
   "totfcost_flbeia", 
