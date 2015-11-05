@@ -301,7 +301,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
 
         na <- dim(q.m)[2]
         nu <- ifelse(is.na(dim(q.m)[3]), 1, dim(q.m)[3])
-
+browser()
         efm <- array(eff[1,]*efs.m[mt,], dim = c(it,na,1,nu,1,1))
         efm <- aperm(efm, c(2:6,1))
 
