@@ -95,7 +95,7 @@ CobbDouglasBio.CAA  <- function(fleets, biols, fleets.ctrl, advice, year = 1, se
             
     efs.m <- matrix(t(sapply(mtnms, function(x) fl@metiers[[x]]@effshare[,yr,,ss, drop=T])), 
                 length(mtnms), it, dimnames = list(metier = mtnms, 1:it))
-    browser()
+    
     eff   <- matrix(fl@effort[,yr,,ss],length(mtnms), it, dimnames = list(mtnms, 1:it), byrow = T) ##
                      
 
