@@ -95,7 +95,7 @@ CobbDouglasBio.CAA  <- function(fleets, biols, fleets.ctrl, advice, year = 1, se
             
     efs.m <- matrix(t(sapply(mtnms, function(x) fl@metiers[[x]]@effshare[,yr,,ss, drop=T])), 
                 length(mtnms), it, dimnames = list(metier = mtnms, 1:it))
-    eff   <- matrix(fl@effort[,yr,,ss],1, it, dimnames = list(1, 1:it), byrow = T) # not by metier
+    eff   <- matrix(fl@effort[,yr,,ss],length(mtnms), it, dimnames = list(mtnms, 1:it), byrow = T) # not by metier
                      
 
     # flinfo: matrix with information on which metier catch which stock.
@@ -236,7 +236,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
 
     efs.m <- matrix(t(sapply(mtnms, function(x) fl@metiers[[x]]@effshare[,yr,,ss, drop=T])),
                 length(mtnms), it, dimnames = list(metier = mtnms, 1:it))
-    eff   <- matrix(fl@effort[,yr,,ss],1, it, dimnames = list(1, 1:it), byrow = T)
+    eff   <- matrix(fl@effort[,yr,,ss],length(mtnms), it, dimnames = list(mtnms, 1:it), byrow = T)
 
     # flinfo: matrix with information on which metier catch which stock.
     fl.        <- FLFleetsExt(fl)
@@ -286,7 +286,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
 
     tac.disc <- ifelse(Ctotal < tac, 1, tac/Ctotal)
  
-  cat('Lrat: ', tac.disc, '\n')
+ # cat('Lrat: ', tac.disc, '\n')
  # cat('C: ', Ctotal, '\n')
 
     Cam <- array(Cam, dim = c(length(mtnms),dim(biols[[st]]@n)[1], 1, dim(biols[[st]]@n)[3],1,it))
@@ -302,7 +302,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
         na <- dim(q.m)[2]
         nu <- ifelse(is.na(dim(q.m)[3]), 1, dim(q.m)[3])
 
-        efm <- array(eff*efs.m[mt,], dim = c(it,na,1,nu,1,1))
+        efm <- array(eff[1,]*efs.m[mt,], dim = c(it,na,1,nu,1,1))
         efm <- aperm(efm, c(2:6,1))
 
         dsa <- cobj@discards.sel[,yr,,ss]  # [na,1,nu,1,1,it]
@@ -329,7 +329,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
     fleets[[flnm]] <- fl
     
 #    fleets <- FLFleetsExt(fleets)
-  cat('Lrat end of the function', c(quantSums(catchWStock.f(fl, stknm))[,yr])/tac,'\n')  
+ # cat('Lrat end of the function', c(quantSums(catchWStock.f(fl, stknm))[,yr])/tac,'\n')  
     return(fleets)
 }
 
