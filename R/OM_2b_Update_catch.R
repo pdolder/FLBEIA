@@ -95,7 +95,8 @@ CobbDouglasBio.CAA  <- function(fleets, biols, fleets.ctrl, advice, year = 1, se
             
     efs.m <- matrix(t(sapply(mtnms, function(x) fl@metiers[[x]]@effshare[,yr,,ss, drop=T])), 
                 length(mtnms), it, dimnames = list(metier = mtnms, 1:it))
-    eff   <- matrix(fl@effort[,yr,,ss],length(mtnms), it, dimnames = list(mtnms, 1:it), byrow = T) # not by metier
+    browser()
+    eff   <- matrix(fl@effort[,yr,,ss],length(mtnms), it, dimnames = list(mtnms, 1:it), byrow = T) ##
                      
 
     # flinfo: matrix with information on which metier catch which stock.
@@ -301,7 +302,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
 
         na <- dim(q.m)[2]
         nu <- ifelse(is.na(dim(q.m)[3]), 1, dim(q.m)[3])
-browser()
+
         efm <- array(eff[1,]*efs.m[mt,], dim = c(it,na,1,nu,1,1))
         efm <- aperm(efm, c(2:6,1))
 
