@@ -139,3 +139,37 @@ getPrice<-function(fleet,stock) {
   
 }
 
+###########################################################################################################
+## Function to summarise the summary indicator outputs from FLBEIA as quantiles from a multi-iteration run
+###########################################################################################################
+
+SumIndQuantiles<-function(data=NULL) {
+  
+  if(is.null(data)) stop("Must specify the data summary object you want to use, i.e. results from bioSum,ecoSum etc..")
+  if(any(!c("reshape2","dplyr") %in% rownames(installed.packages()))) stop("Must have dplyr and reshape2 installed in your library")
+  require(dplyr);   require(reshape2)
+  
+  # If its the fleet summary, eco summary etc... need to reorientate the data
+  data<-melt(data,id=colnames(data)[!colnames(data) %in% c("landings","discards","price","tacshare",                            # fleet  indicators
+                                                           "capacity","costs","effort","profits",                               # eco indicators
+                                                           "DAS_FocusArea","DAS_Elsewhere","revenueFocusArea",                  # Additional DAMARA eco indicatorsa
+                                                           "revenueElsewhere","totalRevenue","crewCosts","fuelCosts",
+                                                           "variableCosts","fixedCosts","depreciationCosts","investmentCosts",
+                                                           "GCF","GVA","netProfit","BER","employment","numberVessels",
+                                                           "effshare","effort")])                                               # metier level indicators
+  
+  
+  # The list of variables to summarise across (excluding iter and value)
+  variables<-colnames(data)[!(colnames(data) %in% c("iter","value"))]
+  variables <- lapply(variables, as.symbol)
+  
+  x<-group_by_(data,.dots=variables) %>% summarise(q05=quantile(value,prob=0.05,na.rm=T),
+                                                   q10=quantile(value,prob=0.10,na.rm=T),
+                                                   q25=quantile(value,prob=0.25,na.rm=T),
+                                                   q50=quantile(value,prob=0.50,na.rm=T),
+                                                   q75=quantile(value,prob=0.75,na.rm=T),
+                                                   q90=quantile(value,prob=0.90,na.rm=T),
+                                                   q95=quantile(value,prob=0.95,na.rm=T)) %>% ungroup()
+  colnames(x)[colnames(x)=="variable"]<-"indicator"
+  return(as.data.frame(x))
+}
