@@ -136,7 +136,7 @@ CobbDouglasBio.CAA  <- function(fleets, biols, fleets.ctrl, advice, year = 1, se
     }
 
     Nst  <- array(N[drop=T],dim = dim(N)[c(1,3,6)])
-    Cm <- CobbDouglasBio(E= eff, N = N, wl.m = wl.m, wd.m = wd.m, ret.m = ret.m, q.m = q.m,
+    Cm <- CobbDouglasBio(E= eff[1,], N = N, wl.m = wl.m, wd.m = wd.m, ret.m = ret.m, q.m = q.m,
              efs.m = efs.m, alpha.m = alpha.m, beta.m = beta.m, rho = rho)
     #browser()
     Ctotal <-  ifelse(rep(catch.restr == 'landings',ni), apply(Cm*matrix(ret.m, dim(ret.m)[1], dim(ret.m)[4]),2,sum), apply(Cm,2,sum))
@@ -277,7 +277,7 @@ CobbDouglasAge.CAA <- function(fleets, biols, fleets.ctrl, advice, year = 1, sea
 
     Nst  <- array(N[drop=T],dim = dim(N)[c(1,3,6)])
 
-    Cam <- CobbDouglasAge(E = eff, N = Nst, wl.m = wl.m, wd.m = wd.m, ret.m = ret.m, q.m = q.m,
+    Cam <- CobbDouglasAge(E = eff[1,], N = Nst, wl.m = wl.m, wd.m = wd.m, ret.m = ret.m, q.m = q.m,
                             efs.m = efs.m, alpha.m = alpha.m, beta.m = beta.m, rho = rho)
 
  # if catch restriction is landings, Lrat is calculated over landings, else it is calculated over total catch including undersize individuals.
