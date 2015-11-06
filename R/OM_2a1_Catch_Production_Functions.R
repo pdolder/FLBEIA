@@ -22,7 +22,6 @@
 #-------------------------------------------------------------------------------
 CobbDouglasBio   <- function(E,N, wl.m, wd.m, q.m,efs.m,alpha.m,beta.m, ret.m, rho = 1 ,...)  # dga: aYYYado a como argumento.
                 {
-    if(yr==47) browswer()
     Ef  <- matrix(E,dim(efs.m)[1],dim(efs.m)[2], byrow = T)*efs.m
     N   <- matrix(N,dim(efs.m)[1], dim(efs.m)[2],byrow = T)
     alpha.m <- matrix(alpha.m,dim(efs.m)[1],dim(efs.m)[2])
@@ -87,7 +86,6 @@ CobbDouglasBio.effort   <- function(Cr,N, wl.m, wd.m,q.m,efs.m,alpha.m,beta.m,re
 CobbDouglasAge   <- function(E,N, wl.m, wd.m, ret.m,q.m,efs.m,alpha.m,beta.m,rho = 1,...){
 
     dimq <- dim(q.m)
-    if(yr==47) browswer()
     Ef  <- matrix(E,dim(efs.m)[1],dim(efs.m)[2], byrow = T)*efs.m      # [mt,it]
     Ef  <- array(Ef, dim = c(dim(Ef), dimq[2:3]))
     Ef  <- aperm(Ef, c(1,3:4,2))   # [mt,na,nu,it] 
