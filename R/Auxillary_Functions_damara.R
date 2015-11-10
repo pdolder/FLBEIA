@@ -18,7 +18,7 @@ loadStockRange<-function(dir=file.path(data.path,'stocks')) {
   stocks <- FLStocks(lapply(stks, function(x) {
     load(file.path(dir,x))
     res<-get("stock")
-    name(res) <- x
+    name(res) <- [x !=".RData"]
     res}))
     return(c(range(stocks)[["minyear"]],range(stocks)[["maxyear"]]))
 }
@@ -39,7 +39,7 @@ loadStocks<-function(dir=file.path(data.path,'stocks')) {
   stocks <- FLStocks(lapply(stks, function(x) {
     load(file.path(dir,x))
     res<-get("stock")
-    name(res) <- x
+    name(res) <- x[x !=".RData"]
     res}))
   return(stocks)
 }
