@@ -131,7 +131,7 @@ CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
           ssbobj <- ssbTACyr + (Bpa - ssbTACyr)/K
             
           fwd.ctrl2 <- fwdControl(data.frame(year = c(assyrnumb+1, assyrnumb+1, assyrnumb+1),  val = c(ssbobj,NA,NA), quantity = c( 'ssb', 'f', Cadv),
-                                               min = c(NA, 0.1, TACnow[i]*Clo), max  = c(NA, Ftg, TACnow[i]*Cup)))
+                                               min = c(NA, 0.2*Ftg, TACnow[i]*Clo), max  = c(NA, Ftg, TACnow[i]*Cup)))
       
           stki <- fwd(stki, ctrl = fwd.ctrl2, sr = list(model =sr.model, params = sr1))     
       }
