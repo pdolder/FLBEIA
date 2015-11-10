@@ -121,6 +121,10 @@ perfectObs <- function(biol, fleets, covars, obs.ctrl, year = 1, season = NULL, 
           
             for(a in ai:na){
                 for(i in 1:it){
+                
+                if(n.[a,y,i]==0) res@harvest[a,y,,,,i]<-0    ## case of NAs for pop numbers in new FLash
+                
+                if(n.[a,y,i]!=0) {
                     n.[a,y,i] - c.[a,y,i]
                     if(n.[a,y,i] < c.[a,y,i]) res@harvest[a,y,,,,i] <- 10
                     
@@ -130,6 +134,7 @@ perfectObs <- function(biol, fleets, covars, obs.ctrl, year = 1, season = NULL, 
                         res@harvest[a,y,,,,i] <- ifelse(is.numeric(zz), zz, res@harvest[ai-1,y,,,,i] )
                     }
                 }
+            }
             }
         }
         # for current year if season before recruitment season:
