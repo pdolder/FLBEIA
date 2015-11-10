@@ -124,7 +124,7 @@ perfectObs <- function(biol, fleets, covars, obs.ctrl, year = 1, season = NULL, 
                 
                 if(is.na(n.[a,y,i])) res@harvest[a,y,,,,i]<-0    ## case of NAs for pop numbers in new FLash
                 
-                if(!is.na(n.[a,y,i]))) {
+                if(!is.na(n.[a,y,i])) {
                     n.[a,y,i] - c.[a,y,i]
                     if(n.[a,y,i] < c.[a,y,i]) res@harvest[a,y,,,,i] <- 10
                     
