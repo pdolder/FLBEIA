@@ -75,9 +75,9 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         ##profits and BER
         res[k:(k + prod(Dim) - 1), "GCF"] <- res[k:(k + prod(Dim) - 1), "totalRevenue"] - res[k:(k + prod(Dim) - 1), "fixedCosts"] - res[k:(k + prod(Dim) - 1), "fuelCosts"] - res[k:(k + prod(Dim) - 1), "variableCosts"] - res[k:(k + prod(Dim) - 1), "crewCosts"]
         res[k:(k + prod(Dim) - 1), "GVA"] <- res[k:(k + prod(Dim) - 1), "GCF"] + res[k:(k + prod(Dim) - 1), "crewCosts"]
-        res[k:(k + prod(Dim) - 1), "netProfit"] <- res[k:(k + prod(Dim) - 1), "GCF"] - res[k:(k + prod(Dim) - 1), "depreciationCosts"] - res[k:(k + prod(Dim) - 1), "investmentCosts"]
-        res[k:(k + prod(Dim) - 1), "BER"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + res[k:(k + prod(Dim) - 1), "fixedCosts"] + res[k:(k + prod(Dim) - 1), "depreciationCosts"] + res[k:(k + prod(Dim) - 1), "investmentCosts"]) /
-                                             ((res[k:(k + prod(Dim) - 1), "GCF"] + res[k:(k + prod(Dim) - 1), "crewCosts"]) / res[k:(k + prod(Dim) - 1), "totalRevenue"])
+        res[k:(k + prod(Dim) - 1), "netProfit"] <- res[k:(k + prod(Dim) - 1), "GCF"] - res[k:(k + prod(Dim) - 1), "depreciationCosts"] 
+        res[k:(k + prod(Dim) - 1), "BER"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + res[k:(k + prod(Dim) - 1), "fixedCosts"] + res[k:(k + prod(Dim) - 1), "depreciationCosts"])/
+                                             (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "totalRevenue"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "totalRevenue"])
         res[k:(k + prod(Dim) - 1), "employment"] <- res[k:(k + prod(Dim) - 1), "employment"] + c(covars[["EmploymentPerVessel"]][f,years,] * covars[["NumbVessels"]][f,years,])
         res[k:(k + prod(Dim) - 1),"numberVessels"] <-res[k:(k + prod(Dim) - 1), "numberVessels"] + c(covars[["NumbVessels"]][f,years,])
         }
