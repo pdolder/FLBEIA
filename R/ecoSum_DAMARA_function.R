@@ -54,7 +54,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
           res[k:(k + prod(Dim) - 1), "fuelCosts"] <- res[k:(k + prod(Dim) - 1), "fuelCosts"] + c(covars[["FuelCost"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
           res[k:(k + prod(Dim) - 1), "variableCosts"] <- res[k:(k + prod(Dim) - 1), "variableCosts"] + c(covars[["VariableCost"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
           #calc DAS elsewhere???
-          res[k:(k + prod(Dim) - 1), "DAS_FocusArea"] <- res[k:(k + prod(Dim) - 1), "DAS_FocusArea"] + c(fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,]) / c(covars[["NumbVessels"]][f,years,]*covars[["AvgKwPerVessel"]][f,years,])
+          res[k:(k + prod(Dim) - 1), "DAS_FocusArea"] <- res[k:(k + prod(Dim) - 1), "DAS_FocusArea"] + (c(fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,]) / c(covars[["NumbVessels"]][f,years,]*covars[["AvgKwPerVessel"]][f,years,])*c(covars[["NumbVessels"]][f,years,]))
           ##revenues
           m <- fl@metiers[[mt]]
           sts <- catchNames(fl)
