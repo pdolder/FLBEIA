@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------#
-#    Additional summary function for DAMARA taking account of
+#    Additional summary functions for DAMARA taking account of
 #    new covars for fleet economics
 #   
 # Paul Dolder / Simon Mardle
@@ -86,3 +86,59 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
     return(res)
 }
     
+
+#-------------------------------------------------------------------------------
+# revenue_damara(fleet, covars, years)
+#-------------------------------------------------------------------------------
+revenue_damara <- function(fleet, covars){
+    flnm<-fleet@name
+    sts <- catchNames(fleet)
+    mts <- names(fleet@metiers)
+    
+    res <- FLQuant(0, dimnames = dimnames(fleet@effort))
+    
+    for(mt in mts){
+        m <- fleet@metiers[[mt]]
+        for(st in sts){
+            if(!(st %in% catchNames(m))) next
+            dat <- m@catches[[st]]
+            res <- res + apply(dat@landings.n*dat@landings.wt*dat@price, c(2,4,6),sum,na.rm=T)
+        }
+    }
+    # Additional revenue from other species in FocusArea, occurs at the fleet level
+    res<- res + (fleet@effort * covars[["OtherRevenueFocusArea"]][fl,])
+    # Additional revenue from species from elsewhere (outside FocusArea), occurs at the fleet level
+    res<- res + (covars[["NumbVessels"]][fl,] * covars[["OtherRevenueElsewhere"]][fl,])
+    
+    return(res)               
+}
+
+#-------------------------------------------------------------------------------
+# costs_damara(fleet, years)
+#-------------------------------------------------------------------------------
+costs_damara <- function(fleet, covars, flnm = NULL){
+    
+    res <- totvcost_damara(fleet) + totfcost_flbeia(fleet, covars, flnm)
+    
+    return(res)               
+}
+
+#-------------------------------------------------------------------------------
+# totvcost_flbeia(fleet, years)
+#-------------------------------------------------------------------------------
+totvcost_damara <- function(fleet,covars){
+    
+    mts <- names(fleet@metiers)
+    
+    res <- FLQuant(0, dimnames = dimnames(fleet@effort))
+    
+    for(mt in mts){
+        res <- res + fleet@metiers[[mt]]@vcost*fleet@effort*fleet@metiers[[mt]]@effshare
+    }
+    Rev <- revenue_damara(fleet,covars)*fleet@crewshare
+    
+    res <- res + Rev
+    
+    return(res)               
+}
+
