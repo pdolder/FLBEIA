@@ -54,6 +54,7 @@ export(
   "CobbDouglasAge.CAA",
   "covars.om",
   "CorrectCatch",
+  "costs_damara", # DAMARA
   "costs_flbeia",
   "createFleetExtAccesors",
   "create.advice.ctrl",
@@ -161,13 +162,16 @@ export(
   "remQ.SSFB",
   "replaceRec",
   "revenue_flbeia",
+  "revenue_FocusArea", # DAMARA
+  "revenue_OutsideFocusArea", # DAMARA
   "SCD",
+  "SCD_damara", # DAMARA
   "seasonshare.CAA",
   "SelAtAge",
   "showArray",
   "slot.fleet",   # DAMARA
   "SMFB",
-"SMFB_lo",
+  "SMFB_lo",
   "SRsim",
   "SSB_flbeia",
   "ssb.get",
@@ -178,6 +182,7 @@ export(
   "tdiscStock",
   "tlandStock",
   "totfcost_flbeia", 
+  "totvcost_damara", # DAMARA
   "totvcost_flbeia",
   "trgtNms",
   "unit2age",
