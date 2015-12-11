@@ -88,9 +88,11 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
     
 
 #-------------------------------------------------------------------------------
-# revenue_damara(fleet, covars, years)
+# revenue_FocusArea(fleet, covars, years)
+# This function calculates the total revenue in the focus area 
+# (Revenue species modelled + Other Revenue Focus Area)
 #-------------------------------------------------------------------------------
-revenue_damara <- function(fleet, covars){
+revenue_FocusArea <- function(fleet, covars){
     flnm<-fleet@name
     sts <- catchNames(fleet)
     mts <- names(fleet@metiers)
@@ -106,27 +108,31 @@ revenue_damara <- function(fleet, covars){
         }
     }
     # Additional revenue from other species in FocusArea, occurs at the fleet level
-    res<- res + (fleet@effort * covars[["OtherRevenueFocusArea"]][fl,])
+    res<- res + (fleet@effort * covars[["OtherRevenueFocusArea"]][flnm,])
+    return(res)               
+}
+
+#-------------------------------------------------------------------------------
+# revenue_OutsideFocusArea (fleet, covars, years)
+# This function calculates the total revenue outside the FocusArea 
+# (Other Revenue OutsideFocus Area * No Vessels)
+#-------------------------------------------------------------------------------
+
+revenue_OutsideFocusArea <- function(fleet, covars){
+    flnm<-fleet@name
+  
+    res <- FLQuant(0, dimnames = dimnames(fleet@effort))
+    
     # Additional revenue from species from elsewhere (outside FocusArea), occurs at the fleet level
-    res<- res + (covars[["NumbVessels"]][fl,] * covars[["OtherRevenueElsewhere"]][fl,])
-    
+    res<- res + (covars[["NumbVessels"]][flnm,] * covars[["OtherRevenueElsewhere"]][flnm,])
     return(res)               
 }
 
 #-------------------------------------------------------------------------------
-# costs_damara(fleet, years)
+# totvcost_damara(fleet, years)
+# Redefined to include crew costs for other species in focus area
 #-------------------------------------------------------------------------------
-costs_damara <- function(fleet, covars, flnm = NULL){
-    
-    res <- totvcost_damara(fleet) + totfcost_flbeia(fleet, covars, flnm)
-    
-    return(res)               
-}
-
-#-------------------------------------------------------------------------------
-# totvcost_flbeia(fleet, years)
-#-------------------------------------------------------------------------------
-totvcost_damara <- function(fleet,covars){
+totvcost_damara <- function(fleet, covars){
     
     mts <- names(fleet@metiers)
     
@@ -135,10 +141,118 @@ totvcost_damara <- function(fleet,covars){
     for(mt in mts){
         res <- res + fleet@metiers[[mt]]@vcost*fleet@effort*fleet@metiers[[mt]]@effshare
     }
-    Rev <- revenue_damara(fleet,covars)*fleet@crewshare
+    Rev <- revenue_FocusArea(fleet, covars)*fleet@crewshare
     
     res <- res + Rev
     
     return(res)               
 }
 
+#-------------------------------------------------------------------------------
+# costs_damara(fleet, years)
+# Redefined to account for crew costs which include 
+# other species in focus area
+#-------------------------------------------------------------------------------
+costs_damara <- function(fleet, covars, flnm = NULL){
+    
+    res <- totvcost_damara(fleet) + totfcost_flbeia(fleet, covars, flnm)
+    
+    return(res)               
+}
+
+
+
+
+###########################################################################################
+###########################################################################################
+## Revised SCD function to take account of revenue from outside of the modelled
+## Area
+###########################################################################################
+
+
+SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,...){
+    
+   
+    
+    fleet <- fleets[[flnm]]
+    
+    ny <- dim(fleet@effort)[2]
+    ns <- dim(fleet@effort)[4]
+    it <- dim(fleet@effort)[6]
+    
+    # VaC
+    VaC <- seasonSums(totvcost_flbeia(fleet)[,year]) # total anual variable costs
+    # FxC
+    FxC <- (covars[["NumbVessels"]][flnm, ] * seasonSums(fleet@fcost))[, year]
+    # FuC  # per unit of effort, we asume common cost for all the metiers.
+    FuC <- (covars[['FuelCost']][flnm,]*seasonSums(fleet@effort))[,year]
+    # CaC # per unit of capacity
+    CaC <- (covars[['CapitalCost']][flnm,]*covars[["NumbVessels"]][flnm, ])[,year]
+    # Revenue - inside the focus area
+    Rev1 <- seasonSums(revenue_FocusArea(fleet)[,year])
+    Rev1 <- ifelse(Rev1 == 0, 1e-16, Rev1)
+    
+    # Revenue - outside the focus area
+    Rev2 <- seasonSums(revenue_OutsideFocusArea(fleet)[,year])
+    Rev2 <- ifelse(Rev2 == 0, 1e-16, Rev2)
+    
+    # CrC - focus area
+    CrC <- (Rev1*seasonMeans(fleet@crewshare[,year]))  +  covars[['Salaries']][flnm,year]
+    
+    # VaC2
+    VaC2<-(covars[["NumbVessels"]][flnm,] * covars[["OtherAreaVariableCost/Vessel"]][flnm,])[,year]
+    
+    #x1 <- FuC/Rev
+    #x2 <- VaC/Rev
+    
+    a <- CrC + FxC + CaC
+    #b <- 1 - x1 - x2
+    # Recalculate b based on both revenue inside the focus area and revenue
+    # outside the focus area
+    b<- ((Rev1 - (FuC + VaC)) + (Rev2 - VaC2))/(Rev1 + Rev2)
+    
+    BER <- a/b
+    
+    # Redefine Rev = Rev + Rev2
+    Rev<- Rev1 + Rev2
+    
+    Inv <- c((Rev - BER)/Rev)*c(covars[['InvestShare']][flnm,year])
+    
+    Ks <- seasonSums(fleet@capacity[,year])[drop=T]    # seasonal capacity [ns,ni]
+    K  <- c(seasonSums(fleet@capacity[,year])) # annual capacity. [ni]
+
+    # pKs How annual capacity is distributed along seasons.
+    if(ns == 1)      pKs <- rep(1,it) #[ni]
+    else  if(it > 1) pKs <- sweep(Ks,2,K,"/")    # ns > 1 [ns,ni]
+          else       pKs <- Ks/K    # [ns]
+    
+    w1 <- c(covars[['w1']][flnm,year]) 
+    w2 <- c(covars[['w2']][flnm,year]) 
+    
+    
+#    # Translate Inv in number of vessels.
+#    Inv_ves <- ifelse(Inv>0, Inv/c(covars[['NewVessPrice']][flnm, year,]), Inv/c(covars[['OldVessPrice']][flnm, year,]))
+  
+    omega <- ifelse(Inv < 0, 
+                        ifelse(-Inv < w1, Inv*K, -w1*K),  # Inv < 0
+                        ifelse(Inv < w2, Inv*K, w2*K))    # Inv >= 0  
+                        
+  #  print(omega)
+                
+    # Investment in new vessels only occur if the operational days of existing vessesl is equal to capacity and investment saving is >0.
+    # In iters where effort == capacity?    
+    # In iterSel although the money for investment is >0 there is no investment.
+    Ef <- c(fleet@effort[,year])
+    iterSel <- which(omega > 0 & Ef < 0.99*K)              
+    
+    omega[iterSel] <- 0
+    
+    # If year is not last year Update capacity  in year [year+1].
+    if (year < ny){
+        fleets[[flnm]]@capacity[, year + 1] <- Ks + omega*pKs
+        covars[['NumbVessels']][flnm,year+1,] <- (K + omega)/covars[['MaxDays']][flnm,year+1,]
+    }
+
+    
+    return(list(fleets = fleets, covars = covars))
+}
