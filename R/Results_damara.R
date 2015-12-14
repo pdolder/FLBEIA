@@ -189,11 +189,11 @@ SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,.
     # CaC # per unit of capacity
     CaC <- (covars[['CapitalCost']][flnm,]*covars[["NumbVessels"]][flnm, ])[,year]
     # Revenue - inside the focus area
-    Rev1 <- seasonSums(revenue_FocusArea(fleet)[,year])
+    Rev1 <- seasonSums(revenue_FocusArea(fleet,covars)[,year])
     Rev1 <- ifelse(Rev1 == 0, 1e-16, Rev1)
     
     # Revenue - outside the focus area
-    Rev2 <- seasonSums(revenue_OutsideFocusArea(fleet)[,year])
+    Rev2 <- seasonSums(revenue_OutsideFocusArea(fleet,covars)[,year])
     Rev2 <- ifelse(Rev2 == 0, 1e-16, Rev2)
     
     # CrC - focus area
