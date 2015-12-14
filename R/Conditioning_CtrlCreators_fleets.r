@@ -44,7 +44,7 @@ create.fleets.ctrl <- function(fltsnames,  n.flts.stks, flts.stksnames, catch.th
     effort.models.available  <- c('fixedEffort', 'SMFB', 'SSFB', 'MaxProfit')
     catch.models.available   <- c('CobbDouglasAge', 'CobbDouglasBio')
     price.models.available   <- c('fixedPrice', 'elasticPrice')
-    capital.models.available <- c('fixedCapital', 'SCD')
+    capital.models.available <- c('fixedCapital', 'SCD','SCD_damara')
     
     nfls <- length(fltsnames) 
     res  <- vector('list', nfls + 2)
@@ -232,6 +232,14 @@ create.fixedCapital.ctrl <- function(resf,fltname,largs) return(resf)
 # extra information is stored in covars because they are system variables.
 #-------------------------------------------------------------------------------
 create.SCD.ctrl <- function(resf,fltname,largs) return(resf)
+
+#-------------------------------------------------------------------------------
+#                       ** create.SCD_damara.ctrl **
+# extra args: NONE
+# This function does not contain extra arguments in fleets.ctrl, the 
+# extra information is stored in covars because they are system variables.
+#-------------------------------------------------------------------------------
+create.SCD_damara.ctrl <- function(resf,fltname,largs) return(resf)
 
 
 #-------------------------------------------------------------------------------
