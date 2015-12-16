@@ -202,7 +202,7 @@ SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,.
     CrC2<- (Rev2*seasonMeans(fleet@crewshare[,year]))  +  covars[['Salaries']][flnm,year]
     
     # VaC2
-    VaC2<-(covars[["NumbVessels"]][flnm,][,year] * covars[["OtherAreaVariableCost/Vessel"]][flnm,])[,year]
+    VaC2<-(covars[["NumbVessels"]][flnm,] * covars[["OtherAreaVariableCost/Vessel"]][flnm,])[,year]
     
     #x1 <- FuC/Rev
     #x2 <- VaC/Rev
