@@ -182,7 +182,7 @@ export(
   "tdiscStock",
   "tlandStock",
   "totfcost_flbeia", 
-  "totvcost_damara", # DAMARA
+  "totvcost_FocusArea", # DAMARA
   "totvcost_flbeia",
   "trgtNms",
   "unit2age",
