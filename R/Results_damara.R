@@ -129,10 +129,10 @@ revenue_OutsideFocusArea <- function(fleet, covars){
 }
 
 #-------------------------------------------------------------------------------
-# totvcost_damara(fleet, years)
+# totvcost_FocusArea(fleet, years)
 # Redefined to include crew costs for other species in focus area
 #-------------------------------------------------------------------------------
-totvcost_damara <- function(fleet, covars){
+totvcost_FocusArea <- function(fleet, covars){
     
     mts <- names(fleet@metiers)
     
@@ -180,13 +180,13 @@ SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,.
     ns <- dim(fleet@effort)[4]
     it <- dim(fleet@effort)[6]
     
-    # VaC
-    VaC <- seasonSums(totvcost_flbeia(fleet)[,year]) # total anual variable costs
-    # FxC
+    # VaC - total for Focus Area
+    VaC <- seasonSums(totvcost_FocusArea(fleet,covars)[,year]) # total anual variable costs
+    # FxC - total for both areas
     FxC <- (covars[["NumbVessels"]][flnm, ] * seasonSums(fleet@fcost))[, year]
     # FuC  # per unit of effort, we asume common cost for all the metiers.
     FuC <- (covars[['FuelCost']][flnm,]*seasonSums(fleet@effort))[,year]
-    # CaC # per unit of capacity
+    # CaC # per number of vessels
     CaC <- (covars[['CapitalCost']][flnm,]*covars[["NumbVessels"]][flnm, ])[,year]
     # Revenue - inside the focus area
     Rev1 <- seasonSums(revenue_FocusArea(fleet,covars)[,year])
@@ -198,18 +198,20 @@ SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,.
     
     # CrC - focus area
     CrC <- (Rev1*seasonMeans(fleet@crewshare[,year]))  +  covars[['Salaries']][flnm,year]
+    # CrC - outside focus area
+    CrC2<- (Rev2*seasonMeans(fleet@crewshare[,year]))  +  covars[['Salaries']][flnm,year]
     
     # VaC2
-    VaC2<-(covars[["NumbVessels"]][flnm,] * covars[["OtherAreaVariableCost/Vessel"]][flnm,])[,year]
+    VaC2<-(covars[["NumbVessels"]][flnm,][,year] * covars[["OtherAreaVariableCost/Vessel"]][flnm,])[,year]
     
     #x1 <- FuC/Rev
     #x2 <- VaC/Rev
     
-    a <- CrC + FxC + CaC
+    a <- CrC + CrC2 + FxC + CaC
     #b <- 1 - x1 - x2
     # Recalculate b based on both revenue inside the focus area and revenue
     # outside the focus area
-    b<- ((Rev1 - (FuC + VaC)) + (Rev2 - VaC2))/(Rev1 + Rev2)
+    b<- ((Rev1 - (FuC + (VaC-CrC))) + (Rev2 - (VaC2-CrC2)))/(Rev1 + Rev2)
     
     BER <- a/b
     
