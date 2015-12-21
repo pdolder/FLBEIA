@@ -30,7 +30,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         totalRevenue=numeric(n),crewCosts=numeric(n),fuelCosts=numeric(n),
         variableCosts=numeric(n),fixedCosts=numeric(n),
         depreciationCosts=numeric(n),investmentCosts=numeric(n),
-        GCF=numeric(n),GVA=numeric(n),netProfit=numeric(n),BER=numeric(n),
+        GCF=numeric(n),GVA=numeric(n),netProfit=numeric(n),BER=numeric(n),BERindex=numeric(n),
         employment=numeric(n),numberVessels=numeric(n))
     k <- 1
     for (f in flnms) {
@@ -52,7 +52,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         ##metier based costs (i.e. fuel and other variable costs)
         for (mt in mts) {   ##CHECK ALL EFFORT IS ACCOUNTED FOR!
           res[k:(k + prod(Dim) - 1), "fuelCosts"] <- res[k:(k + prod(Dim) - 1), "fuelCosts"] + c(covars[["FuelCost"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
-          res[k:(k + prod(Dim) - 1), "variableCosts"] <- res[k:(k + prod(Dim) - 1), "variableCosts"] + c(covars[["VariableCost"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,])
+          res[k:(k + prod(Dim) - 1), "variableCosts"] <- res[k:(k + prod(Dim) - 1), "variableCosts"] + c(covars[["VariableCost"]][f, years,] * fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,]) + c(covars[["OtherAreaVariableCost/Vessel"]][f, years,] * covars[["NumbVessels"]][f, years,])
           #calc DAS elsewhere???
           res[k:(k + prod(Dim) - 1), "DAS_FocusArea"] <- res[k:(k + prod(Dim) - 1), "DAS_FocusArea"] + (c(fl@effort[,years,] * fl@metiers[[mt]]@effshare[,years,]) / c(covars[["NumbVessels"]][f,years,]*covars[["AvgKwPerVessel"]][f,years,])*c(covars[["NumbVessels"]][f,years,]))
           ##revenues
@@ -78,6 +78,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         res[k:(k + prod(Dim) - 1), "netProfit"] <- res[k:(k + prod(Dim) - 1), "GCF"] - res[k:(k + prod(Dim) - 1), "depreciationCosts"] 
         res[k:(k + prod(Dim) - 1), "BER"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + res[k:(k + prod(Dim) - 1), "fixedCosts"] + res[k:(k + prod(Dim) - 1), "depreciationCosts"])/
                                              (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "totalRevenue"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "totalRevenue"])
+        res[k:(k + prod(Dim) - 1), "BERindex"] <- (res[k:(k + prod(Dim) - 1), "totalRevenue"]/res[k:(k + prod(Dim) - 1), "BER"])
         res[k:(k + prod(Dim) - 1), "employment"] <- res[k:(k + prod(Dim) - 1), "employment"] + c(covars[["EmploymentPerVessel"]][f,years,] * covars[["NumbVessels"]][f,years,])
         res[k:(k + prod(Dim) - 1),"numberVessels"] <-res[k:(k + prod(Dim) - 1), "numberVessels"] + c(covars[["NumbVessels"]][f,years,])
         }
