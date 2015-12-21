@@ -126,18 +126,23 @@ setMethod("slot.fleet", signature(fleets="FLFleetsExt"),
 ##################################################################################################
 ##################################################################################################
 
-getPrice<-function(fleet,stock) {
-  Mts<-fleet@metiers@names
-  
-  for (m in Mts) {
-    if(!stock %in% catchNames(fleet@metiers[[m]])) next
-    
-    res<-fleet@metiers[[m]]@catches[[stock]]@price
-    return(res)
-    stop
-  }
-  
+getPrice<-function (fleet, stock) {
+  mts <- fleet@metiers@names
+  totLa <- landWStock.f(fleet, stock)
+  res <- FLQuant(0, dimnames = dimnames(totLa))
+  for (mt in mts) {
+    m <- fleet@metiers[[mt]]
+    if (!stock %in% catchNames(m)) 
+      next
+    dat <- m@catches[[stock]]
+    res <- res + apply(dat@landings.n * dat@landings.wt * 
+                         dat@price, c(1, 2, 4, 6), sum, na.rm = T)
+    }
+  res <- res/totLa
+  res[is.na(res)]<-0
+  return(res)
 }
+
 
 ###########################################################################################################
 ## Function to summarise the summary indicator outputs from FLBEIA as quantiles from a multi-iteration run
