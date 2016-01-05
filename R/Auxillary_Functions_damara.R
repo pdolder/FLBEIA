@@ -160,7 +160,7 @@ SumIndQuantiles<-function(data=NULL) {
                                                            "DAS_FocusArea","DAS_Elsewhere","revenueFocusArea",                  # Additional DAMARA eco indicatorsa
                                                            "revenueElsewhere","totalRevenue","crewCosts","fuelCosts",
                                                            "variableCosts","fixedCosts","depreciationCosts","investmentCosts",
-                                                           "GCF","GVA","netProfit","BER","employment","numberVessels",
+                                                           "GCF","GVA","netProfit","BER","BERindex","employment","numberVessels",
                                                            "effshare","effort")])                                               # metier level indicators
   
   
