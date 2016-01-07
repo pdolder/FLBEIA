@@ -48,6 +48,11 @@ CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
   
     stk <- stf(stk, nyears = 3, wts.nyears = wts.nyears, fbar.nyears = fbar.nyears, f.rescale = f.rescale) #, disc.nyrs = disc.nyears)
     
+    ## case where there are no landings or discards at age in conditioning year,
+    # need to define the selection - assume all landed at age
+    stk@landings.n[is.na(stk@landings.n)] <- 1
+    stk@discards.n[is.na(stk@discards.n)] <- 0
+    
     iter   <- dim(stk@m)[6]
     yrsnames <- dimnames(stk@m)[[2]]
     yrsnumbs <- as.numeric(yrsnames)
