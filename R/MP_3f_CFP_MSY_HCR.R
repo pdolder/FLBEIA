@@ -25,6 +25,9 @@
 
 CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
    
+   # testing problem with whiting
+   if(year==46 & stknm=="WHG) browser()
+   
    # project the stock 3 years, (current year, TAC year, TAC year + 1 for ssb or biomass constraints). 
 #    nyears      <- ifelse(is.null(advice.ctrl[[stknm]][['nyears']]), 3, advice.ctrl[[stknm]][['nyears']]) 
     wts.nyears  <- ifelse(is.null(advice.ctrl[[stknm]][['wts.nyears']]), 3, advice.ctrl[[stknm]][['wts.nyears']]) 
