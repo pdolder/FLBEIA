@@ -159,7 +159,9 @@ CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
       
       Ftg2<-ifelse(assyrnumb+1>=Yrtg,Ftg,((1-(1/(Yrtg-assyrnumb+1)))*fsq)+((1/(Yrtg-assyrnumb+1))*as.numeric(Ftg)))
       #print(Ftg2)
-      Ftg2<-min(max(fsq,as.numeric(Ftg)),Ftg2) # take the min or fsq or the new target, but ensuring fsq is not below Ftg
+      # take the min or fsq or the new target, but ensuring fsq is not below Ftg
+      # If already below or equal to Ftg, can go straight there (subject to TAC constraint)
+      Ftg2<-ifelse(Ftg2<=Ftg,Ftg,min(max(fsq,as.numeric(Ftg)),Ftg2)) 
       
       if (is.finite(Cup)) {
           fwd.ctrl2 <- fwdControl(data.frame(year = c(assyrnumb+1, assyrnumb+1),  val = c(Ftg2,NA), quantity = c( 'f', Cadv),
