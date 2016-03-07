@@ -30,7 +30,7 @@
 # SMFB_LO(fleets, biols, covars, fleets.ctrl, year = 1, season = 1)
 #-------------------------------------------------------------------------------
 SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, flnm, year = 1, season = 1,...){
-    
+    if(year==52) browser() ## testing
     if(length(year) > 1 | length(season) > 1)
         stop('Only one year and season is allowed' )
 
