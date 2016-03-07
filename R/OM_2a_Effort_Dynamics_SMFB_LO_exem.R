@@ -33,7 +33,7 @@ SMFB_lo <- function(fleets, biols, covars, advice, fleets.ctrl, advice.ctrl, fln
     
     if(length(year) > 1 | length(season) > 1)
         stop('Only one year and season is allowed' )
-    if(year==52) browser()
+    
     # If year/season/iter numerics => indicate position 
     # else names => get positions.
     if(length(year) > 1 | length(season) > 1)
