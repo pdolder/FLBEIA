@@ -66,7 +66,8 @@ CobbDouglasBio.effort   <- function(Cr,N, wl.m, wd.m,q.m,efs.m,alpha.m,beta.m,re
     upl <- X[which(fobjX != Inf)[length(which(fobjX != Inf))]]
 
     Cinf <- CobbDouglasBio(E = upl,N=N, wl.m = wl.m, wd.m = wd.m, q.m=q.m,efs.m=efs.m,alpha.m=alpha.m,beta.m=beta.m, ret.m = ret.m, rho = rho)
-    if(is.na(Cinf)) browser() ## testing
+    if(is.na(sum(Cinf))) browser() ## testing
+    if(is.na(Cr)) browser() ## testing
     if(!is.na(Cinf) & (Cr - sum(Cinf))> 0) # Even with infinity effort it is not possible to catch the quota => return 'almost' infinity effort.
         return(effort = upl)
 
@@ -127,7 +128,8 @@ CobbDouglasAge.effort   <- function(Cr,N,wl.m, wd.m, ret.m, q.m,efs.m,alpha.m,be
 
 
     Cinf <- CobbDouglasAge(E = 1e100,Cr=Cr,N=N, wl.m = wl.m, wd.m = wd.m, q.m=q.m,efs.m=efs.m,alpha.m=alpha.m,beta.m=beta.m,  ret.m = ret.m, rho = rho)
-    if(is.na(Cinf)) browser() ## testing
+    if(is.na(sum(Cinf))) browser() ## testing
+    if(is.na(Cr)) browser() ## testing
     if(!is.na(sum(Cinf)) & (Cr - sum(Cinf))> 0) # Even with infinity effort it is not possible to catch the quota => return 'almost' infinity effort.
         return(effort = 1e100)
 
