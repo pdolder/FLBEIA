@@ -66,6 +66,7 @@ CobbDouglasBio.effort   <- function(Cr,N, wl.m, wd.m,q.m,efs.m,alpha.m,beta.m,re
     upl <- X[which(fobjX != Inf)[length(which(fobjX != Inf))]]
 
     Cinf <- CobbDouglasBio(E = upl,N=N, wl.m = wl.m, wd.m = wd.m, q.m=q.m,efs.m=efs.m,alpha.m=alpha.m,beta.m=beta.m, ret.m = ret.m, rho = rho)
+    if(year==52) browser() ## testing
     if(!is.na(Cinf) & (Cr - sum(Cinf))> 0) # Even with infinity effort it is not possible to catch the quota => return 'almost' infinity effort.
         return(effort = upl)
 
