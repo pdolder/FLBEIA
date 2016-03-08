@@ -24,7 +24,7 @@
 #-------------------------------------------------------------------------------
 
 CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
-   
+   if(year==52 & stknm=="COD") browser()
    # testing problem with whiting
 #   if(year==45 & stknm=="WHG") browser()
    
