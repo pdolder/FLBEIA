@@ -173,8 +173,9 @@ CFPMSYHCR <- function(stocks, advice, advice.ctrl, year, stknm,...){
           stki <- fwd(stki, ctrl = fwd.ctrl2, sr = list(model =sr.model, params = sr1))           
           }
       }
-    
-      yy <- ifelse(slot(stki, Cadv)[,year+1] == 0, 1e-6, slot(stki, Cadv)[,year+1])
+      ## Fix problem where no catch meets SSB target under rebuilding rule.. set minimal TAC 
+      ## in this case using or in ifelse
+      yy <- ifelse(slot(stki, Cadv)[,year+1] == 0 | is.na(slot(stki,Cadv)[,year+1]), 1e-6, slot(stki, Cadv)[,year+1])
                    
       advice[['TAC']][stknm,year+1,,,,i] <- yy # The TAC is given in terms of CATCH.
 
