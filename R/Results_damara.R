@@ -268,3 +268,103 @@ SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,.
     
     return(list(fleets = fleets, covars = covars))
 }
+
+
+
+
+
+###########################################################################################
+###########################################################################################
+## Revised SCD function to ensure only income inside focus area affects fleet sizes
+###########################################################################################
+
+
+SCD_damara_focus <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,...){
+    
+    # Proportion of income before implementation from Focus area
+    PropFocus <-c(revenue_FocusArea(fleets[[flnm]],covars)[,"2013"]/(revenue_FocusArea(fleets[[flnm]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[flnm]],covars)[,"2013"]))
+    
+    fleet <- fleets[[flnm]]
+    
+    ny <- dim(fleet@effort)[2]
+    ns <- dim(fleet@effort)[4]
+    it <- dim(fleet@effort)[6]
+    
+    # VaC - total for Focus Area
+    VaC <- seasonSums(totvcost_FocusArea(fleet,covars)[,year]) # total anual variable costs
+    # FxC - total for both areas
+    FxC <- (covars[["NumbVessels"]][flnm, ] * seasonSums(fleet@fcost))[, year]
+    # FuC  # per unit of effort, we asume common cost for all the metiers.
+    FuC <- (covars[['FuelCost']][flnm,]*seasonSums(fleet@effort))[,year]
+    # CaC # per number of vessels
+    CaC <- (covars[['CapitalCost']][flnm,]*covars[["NumbVessels"]][flnm, ])[,year]
+    # Revenue - inside the focus area
+    Rev1 <- seasonSums(revenue_FocusArea(fleet,covars)[,year])
+    Rev1 <- ifelse(Rev1 == 0, 1e-16, Rev1)
+    
+    # Revenue - outside the focus area
+    Rev2 <- seasonSums(revenue_OutsideFocusArea(fleet,covars)[,year])
+    Rev2 <- ifelse(Rev2 == 0, 1e-16, Rev2)
+    
+    # CrC - focus area
+    CrC <- (Rev1*seasonMeans(fleet@crewshare[,year]))  +  covars[['Salaries']][flnm,year]
+    # CrC - outside focus area
+    CrC2<- (Rev2*seasonMeans(fleet@crewshare[,year]))  +  covars[['Salaries']][flnm,year]
+    
+    # VaC2
+    VaC2<-(covars[["NumbVessels"]][flnm,] * covars[["OtherAreaVariableCost/Vessel"]][flnm,])[,year]
+    
+    #x1 <- FuC/Rev
+    #x2 <- VaC/Rev
+    
+    # Only the costs in the focus area including a share of the fixed costs
+    a <- CrC + (FxC*PropFocus) + (CaC*PropFocus)
+    #b <- 1 - x1 - x2
+    # Recalculate b based on both revenue inside the focus area only
+    b<- (Rev1 - (FuC + (VaC-CrC)))/Rev1
+    
+    BER <- a/b
+    
+    # Redefine Rev = Rev + Rev2
+    Rev<- Rev1
+    
+    Inv <- c((Rev - BER)/Rev)*(c(covars[['InvestShare']][flnm,year])*PropFocus)
+    
+    Ks <- seasonSums(fleet@capacity[,year])[drop=T]    # seasonal capacity [ns,ni]
+    K  <- c(seasonSums(fleet@capacity[,year])) # annual capacity. [ni]
+
+    # pKs How annual capacity is distributed along seasons.
+    if(ns == 1)      pKs <- rep(1,it) #[ni]
+    else  if(it > 1) pKs <- sweep(Ks,2,K,"/")    # ns > 1 [ns,ni]
+          else       pKs <- Ks/K    # [ns]
+    
+    w1 <- c(covars[['w1']][flnm,year]) 
+    w2 <- c(covars[['w2']][flnm,year]) 
+    
+    
+#    # Translate Inv in number of vessels.
+#    Inv_ves <- ifelse(Inv>0, Inv/c(covars[['NewVessPrice']][flnm, year,]), Inv/c(covars[['OldVessPrice']][flnm, year,]))
+  
+    omega <- ifelse(Inv < 0, 
+                        ifelse(-Inv < w1, Inv*K, -w1*K),  # Inv < 0
+                        ifelse(Inv < w2, Inv*K, w2*K))    # Inv >= 0  
+                        
+  #  print(omega)
+                
+    # Investment in new vessels only occur if the operational days of existing vessesl is equal to capacity and investment saving is >0.
+    # In iters where effort == capacity?    
+    # In iterSel although the money for investment is >0 there is no investment.
+    Ef <- c(fleet@effort[,year])
+    iterSel <- which(omega > 0 & Ef < 0.99*K)              
+    
+    omega[iterSel] <- 0
+    
+    # If year is not last year Update capacity  in year [year+1].
+    if (year < ny){
+        fleets[[flnm]]@capacity[, year + 1] <- Ks + omega*pKs
+        covars[['NumbVessels']][flnm,year+1,] <- (K + omega)/covars[['MaxDays']][flnm,year+1,]
+    }
+
+    
+    return(list(fleets = fleets, covars = covars))
+}
