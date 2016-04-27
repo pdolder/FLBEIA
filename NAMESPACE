@@ -166,6 +166,7 @@ export(
   "revenue_OutsideFocusArea", # DAMARA
   "SCD",
   "SCD_damara", # DAMARA
+  "SCD_damara_focus", # DAMARA
   "seasonshare.CAA",
   "SelAtAge",
   "showArray",
