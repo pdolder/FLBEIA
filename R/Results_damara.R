@@ -31,7 +31,7 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         variableCosts=numeric(n),fixedCosts=numeric(n),
         depreciationCosts=numeric(n),investmentCosts=numeric(n),totalCosts=numeric(n),
         GCF=numeric(n),GVA=numeric(n),netProfit=numeric(n),BER=numeric(n),BERindex=numeric(n),
-        employment=numeric(n),numberVessels=numeric(n))
+        BERFocus=numeric(n),BERindexFocus=numeric(n),employment=numeric(n),numberVessels=numeric(n))
     k <- 1
     for (f in flnms) {
         fl <- fleets[[f]]
@@ -82,6 +82,12 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         res[k:(k + prod(Dim) - 1), "BER"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + res[k:(k + prod(Dim) - 1), "fixedCosts"] + res[k:(k + prod(Dim) - 1), "depreciationCosts"])/
                                              (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "totalRevenue"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "totalRevenue"])
         res[k:(k + prod(Dim) - 1), "BERindex"] <- (res[k:(k + prod(Dim) - 1), "totalRevenue"]/res[k:(k + prod(Dim) - 1), "BER"])
+        # BER for the Focus area only
+        res[k:(k + prod(Dim) - 1), "BERFocus"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + (c(revenue_FocusArea(fleets[[f]],covars)[,"2013"]/(revenue_FocusArea(fleets[[f]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2013"])) * res[k:(k + prod(Dim) - 1), "fixedCosts"]) + 
+                                                  (c(revenue_FocusArea(fleets[[f]],covars)[,"2013"]/(revenue_FocusArea(fleets[[f]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2013"])) * res[k:(k + prod(Dim) - 1), "depreciationCosts"]))/
+                                             (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "revenueFocusArea"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "revenueFocusArea"])
+        
+        res[k:(k + prod(Dim) - 1), "BERindexFocus"] <- (res[k:(k + prod(Dim) - 1), "revenueFocusArea"]/res[k:(k + prod(Dim) - 1), "BERFocus"])
         res[k:(k + prod(Dim) - 1), "employment"] <- res[k:(k + prod(Dim) - 1), "employment"] + c(covars[["EmploymentPerVessel"]][f,years,] * covars[["NumbVessels"]][f,years,])
         res[k:(k + prod(Dim) - 1),"numberVessels"] <-res[k:(k + prod(Dim) - 1), "numberVessels"] + c(covars[["NumbVessels"]][f,years,])
         }
