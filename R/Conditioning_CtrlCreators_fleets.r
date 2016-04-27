@@ -44,7 +44,7 @@ create.fleets.ctrl <- function(fltsnames,  n.flts.stks, flts.stksnames, catch.th
     effort.models.available  <- c('fixedEffort', 'SMFB', 'SSFB', 'MaxProfit')
     catch.models.available   <- c('CobbDouglasAge', 'CobbDouglasBio')
     price.models.available   <- c('fixedPrice', 'elasticPrice')
-    capital.models.available <- c('fixedCapital', 'SCD','SCD_damara')
+    capital.models.available <- c('fixedCapital', 'SCD','SCD_damara','SCD_damara_focus')
     
     nfls <- length(fltsnames) 
     res  <- vector('list', nfls + 2)
@@ -240,7 +240,7 @@ create.SCD.ctrl <- function(resf,fltname,largs) return(resf)
 # extra information is stored in covars because they are system variables.
 #-------------------------------------------------------------------------------
 create.SCD_damara.ctrl <- function(resf,fltname,largs) return(resf)
-
+create.SCD_damara_focus.ctrl <- function(resf,fltname,largs) return(resf)
 
 #-------------------------------------------------------------------------------
 #                   ** create.fixedPrice.ctrl **
