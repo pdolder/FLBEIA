@@ -82,12 +82,22 @@ ecoSum_damara <- function (fleets, flnms = "all", years, covars = NULL)
         res[k:(k + prod(Dim) - 1), "BER"] <- (res[k:(k + prod(Dim) - 1), "crewCosts"] + res[k:(k + prod(Dim) - 1), "fixedCosts"] + res[k:(k + prod(Dim) - 1), "depreciationCosts"])/
                                              (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "totalRevenue"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "totalRevenue"])
         res[k:(k + prod(Dim) - 1), "BERindex"] <- (res[k:(k + prod(Dim) - 1), "totalRevenue"]/res[k:(k + prod(Dim) - 1), "BER"])
-        # BER for the Focus area only
+        
+        # BER for the Focus area only - note, ESP and IRL no data in 2013, so use 2012
+        if (fl %in% c("ESP_HOK_O10M","ESP_DTS_O10M","IRL_OTH_O10M")) {
+        res[k:(k + prod(Dim) - 1), "BERFocus"] <- (c(revenue_FocusArea(fleets[[f]],covars)[,"2012"]/(revenue_FocusArea(fleets[[f]],covars)[,"2012"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2012"]))*(res[k:(k + prod(Dim) - 1), "crewCosts"]) + (c(revenue_FocusArea(fleets[[f]],covars)[,"2012"]/(revenue_FocusArea(fleets[[f]],covars)[,"2012"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2012"])) * res[k:(k + prod(Dim) - 1), "fixedCosts"]) + 
+                                                  (c(revenue_FocusArea(fleets[[f]],covars)[,"2012"]/(revenue_FocusArea(fleets[[f]],covars)[,"2012"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2012"])) * res[k:(k + prod(Dim) - 1), "depreciationCosts"]))/
+                                             (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "revenueFocusArea"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "revenueFocusArea"])
+        res[k:(k + prod(Dim) - 1), "BERindexFocus"] <- (res[k:(k + prod(Dim) - 1), "revenueFocusArea"]/res[k:(k + prod(Dim) - 1), "BERFocus"])
+        }
+        
+        if (!(fl %in% c("ESP_HOK_O10M","ESP_DTS_O10M","IRL_OTH_O10M"))) {
         res[k:(k + prod(Dim) - 1), "BERFocus"] <- (c(revenue_FocusArea(fleets[[f]],covars)[,"2013"]/(revenue_FocusArea(fleets[[f]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2013"]))*(res[k:(k + prod(Dim) - 1), "crewCosts"]) + (c(revenue_FocusArea(fleets[[f]],covars)[,"2013"]/(revenue_FocusArea(fleets[[f]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2013"])) * res[k:(k + prod(Dim) - 1), "fixedCosts"]) + 
                                                   (c(revenue_FocusArea(fleets[[f]],covars)[,"2013"]/(revenue_FocusArea(fleets[[f]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[f]],covars)[,"2013"])) * res[k:(k + prod(Dim) - 1), "depreciationCosts"]))/
                                              (1-(res[k:(k + prod(Dim) - 1), "fuelCosts"]/ res[k:(k + prod(Dim) - 1), "revenueFocusArea"]) - (res[k:(k + prod(Dim) - 1), "variableCosts"])/res[k:(k + prod(Dim) - 1), "revenueFocusArea"])
-        
         res[k:(k + prod(Dim) - 1), "BERindexFocus"] <- (res[k:(k + prod(Dim) - 1), "revenueFocusArea"]/res[k:(k + prod(Dim) - 1), "BERFocus"])
+        }
+        ## ## End BERFocus area ###
         res[k:(k + prod(Dim) - 1), "employment"] <- res[k:(k + prod(Dim) - 1), "employment"] + c(covars[["EmploymentPerVessel"]][f,years,] * covars[["NumbVessels"]][f,years,])
         res[k:(k + prod(Dim) - 1),"numberVessels"] <-res[k:(k + prod(Dim) - 1), "numberVessels"] + c(covars[["NumbVessels"]][f,years,])
         }
