@@ -160,8 +160,8 @@ SumIndQuantiles<-function(data=NULL) {
                                                            "DAS_FocusArea","DAS_Elsewhere","revenueFocusArea",                  # Additional DAMARA eco indicatorsa
                                                            "revenueElsewhere","totalRevenue","crewCosts","fuelCosts",
                                                            "variableCosts","fixedCosts","depreciationCosts","investmentCosts",
-                                                           "totalCosts","GCF","GVA","netProfit","BER","BERindex","employment",
-                                                           "numberVessels","effshare","effort")])                                               # metier level indicators
+                                                           "totalCosts","GCF","GVA","netProfit","BER","BERindex","BERFocus","BERindexFocus",
+                                                           "employment","numberVessels","effshare","effort")])    # metier level indicators
   
   
   # The list of variables to summarise across (excluding iter and value)
