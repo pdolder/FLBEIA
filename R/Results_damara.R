@@ -291,17 +291,17 @@ SCD_damara <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,.
 
 SCD_damara_focus <- function(fleets, covars, fleets.ctrl, flnm, year = 1, season = 1,...){
     
+    fleet <- fleets[[flnm]]
+    
     # Proportion of income before implementation from Focus area
     # Including ESP and IRL exclusions
-    if(!(fl %in% c("ESP_HOK_O10M","ESP_DTS_O10M","IRL_OTH_O10M"))) {
+    if(!(flnm %in% c("ESP_HOK_O10M","ESP_DTS_O10M","IRL_OTH_O10M"))) {
     PropFocus <-c(revenue_FocusArea(fleets[[flnm]],covars)[,"2013"]/(revenue_FocusArea(fleets[[flnm]],covars)[,"2013"]+revenue_OutsideFocusArea(fleets[[flnm]],covars)[,"2013"]))
     }
     
-    if(fl %in% c("ESP_HOK_O10M","ESP_DTS_O10M","IRL_OTH_O10M")) {
+    if(flnm %in% c("ESP_HOK_O10M","ESP_DTS_O10M","IRL_OTH_O10M")) {
     PropFocus <-c(revenue_FocusArea(fleets[[flnm]],covars)[,"2012"]/(revenue_FocusArea(fleets[[flnm]],covars)[,"2012"]+revenue_OutsideFocusArea(fleets[[flnm]],covars)[,"2012"]))
     }
-    
-    fleet <- fleets[[flnm]]
     
     ny <- dim(fleet@effort)[2]
     ns <- dim(fleet@effort)[4]
